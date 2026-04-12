@@ -1,7 +1,6 @@
 import axios from "axios";
 import  { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Loading from "../assets/Loading4.webm";
 import Breadcrums from "../components/Breadcrums";
 import { IoCartOutline } from "react-icons/io5";
 import { useCart } from "../context/CartContext";
