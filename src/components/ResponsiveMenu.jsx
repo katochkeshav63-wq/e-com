@@ -1,7 +1,7 @@
 import { UserButton, useUser } from '@clerk/clerk-react'
-import React from 'react'
+
 import { FaUserCircle } from 'react-icons/fa'
-import { Link, NavLink } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 
 const ResponsiveMenu = ({ openNav, setOpenNav }) => {
     const { user } = useUser()

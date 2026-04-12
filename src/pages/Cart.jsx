@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { useCart } from '../context/CartContext'
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { LuNotebookText } from 'react-icons/lu';

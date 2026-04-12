@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { getData } from "/src/context/DataContext";
 
 const Category = () => {

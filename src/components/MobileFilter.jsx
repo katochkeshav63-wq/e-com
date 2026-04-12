@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { FaFilter } from 'react-icons/fa6'
 import { getData } from '../context/DataContext'
 

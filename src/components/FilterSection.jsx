@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { getData } from '../context/DataContext'
 
 const FilterSection = ({search, setSearch, brand, setBrand, priceRange, setPriceRange, category, setCategory, handleBrandChange, handleCategoryChange}) => {

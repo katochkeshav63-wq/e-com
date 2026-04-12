@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Loading from "../assets/Loading4.webm"
 import { ChevronLeft } from 'lucide-react'
