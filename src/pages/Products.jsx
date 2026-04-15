@@ -5,9 +5,12 @@ import Pagination from "../components/Pagination";
 import Lottie from "lottie-react";
 import notfound from "../assets/notfound.json";
 import MobileFilter from "../components/MobileFilter";
+import { useNavigate } from "react-router-dom";
+import Loading from "../assets/Loading.gif";
 
 const Products = () => {
-  const { data, fetchAllProducts } = getData();
+  const { data , fetchAllProducts } = getData(); // ✅ safe fallback
+  const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
@@ -15,6 +18,7 @@ const Products = () => {
   const [page, setPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
 
+  // ✅ Fetch products
   useEffect(() => {
     if (!data) {
       fetchAllProducts();
@@ -33,15 +37,16 @@ const Products = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // ✅ FIX: category.name check (important)
-  const filteredData = data?.filter((item) =>
-    item.title?.toLowerCase().includes(search.toLowerCase()) &&
-    (category === "All" || item.category?.name === category) &&
+  // ✅ Filtering logic
+  const filteredData = data.filter((item) =>
+    item.title.toLowerCase().includes(search.toLowerCase()) &&
+    (category === "All" || item.category === category) &&
     item.price >= priceRange[0] &&
     item.price <= priceRange[1]
   );
 
-  const dynamicPage = Math.ceil((filteredData?.length || 0) / 5);
+  // ✅ Pagination
+  const dynamicPage = Math.ceil(filteredData.length / 9);
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -60,7 +65,7 @@ const Products = () => {
           handleCategoryChange={handleCategoryChange}
         />
 
-        {data?.length > 0 ? (
+        {data.length > 0 ? (
           <div className="flex gap-6">
 
             {/* 🧊 Sidebar Filter */}
@@ -82,7 +87,7 @@ const Products = () => {
               {/* 🔍 Top bar */}
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold">
-                  Showing {filteredData?.length || 0} Products
+                  Showing {filteredData.length} Products
                 </h2>
 
                 <button
@@ -93,45 +98,46 @@ const Products = () => {
                 </button>
               </div>
 
-              {filteredData?.length > 0 ? (
+              {filteredData.length > 0 ? (
                 <>
-<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-  {filteredData
-    ?.slice(page * 9 - 9, page * 9)
-    .map((product) => (
-      <div
-        key={product.id}
-        onClick={() => window.location.href = `/products/${product.id}`}
-        className="bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer overflow-hidden group"
-      >
-        {/* ✅ Product Image */}
-        <div className="overflow-hidden">
-          <img
-            src={product.images?.[0]}
-            alt={product.title}
-            className="w-full h-56 object-cover group-hover:scale-105 transition duration-300"
-          />
-        </div>
+                  {/* 🧾 Product Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    {filteredData
+                      .slice(page * 9 - 9, page * 9)
+                      .map((product) => (
+                        <div
+                          key={product.id}
+                          onClick={() => navigate(`/products/${product.id}`)}
+                          className="bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer overflow-hidden group"
+                        >
+                          {/* 🖼 Image */}
+                          <div className="overflow-hidden">
+                            <img
+                              src={product.image}
+                              alt={product.title}
+                              className="w-full h-56 object-contain p-4 group-hover:scale-105 transition duration-300"
+                            />
+                          </div>
 
-        {/* ✅ Product Info */}
-        <div className="p-4">
-          <h3 className="font-semibold text-sm line-clamp-2">
-            {product.title}
-          </h3>
+                          {/* 📄 Info */}
+                          <div className="p-4">
+                            <h3 className="font-semibold text-sm line-clamp-2">
+                              {product.title}
+                            </h3>
 
-          <p className="text-lg font-bold text-indigo-600 mt-2">
-            ₹ {product.price}
-          </p>
+                            <p className="text-lg font-bold text-indigo-600 mt-2">
+                              $ {product.price}
+                            </p>
 
-          <p className="text-xs text-gray-500 mt-1">
-            {product.category?.name}
-          </p>
-        </div>
-      </div>
-    ))}
-</div>
+                            <p className="text-xs text-gray-500 mt-1">
+                              {product.category}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
 
-                  {/* ✅ Pagination */}
+                  {/* 🔢 Pagination */}
                   <div className="mt-8 flex justify-center">
                     <Pagination
                       pageHandler={pageHandler}
@@ -141,6 +147,7 @@ const Products = () => {
                   </div>
                 </>
               ) : (
+                /* ❌ No Results */
                 <div className="flex flex-col justify-center items-center h-[400px]">
                   <Lottie animationData={notfound} className="w-[300px]" />
                   <p className="text-gray-500 mt-2">
@@ -151,11 +158,9 @@ const Products = () => {
             </div>
           </div>
         ) : (
-          /* 🔄 Loading State */
+          /* 🔄 Loading */
           <div className="flex items-center justify-center h-[400px]">
-            <video muted autoPlay loop className="w-[150px]">
-              <source src={Loading} type="video/webm" />
-            </video>
+            <img src={Loading} alt="loading" className="w-[120px]" />
           </div>
         )}
       </div>

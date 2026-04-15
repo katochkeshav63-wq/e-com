@@ -11,7 +11,7 @@ export const DataProvider = ({ children }) => {
   const fetchAllProducts = async () => {
     try {
       const res = await axios.get(
-        "https://api.escuelajs.co/api/v1/products"
+        "https://fakestoreapi.com/products"
       );
       setData(res.data);
       setLoading(false);
@@ -28,7 +28,7 @@ export const DataProvider = ({ children }) => {
 
   // ✅ Extract unique categories (IMPORTANT FIX)
   const getUniqueCategories = () => {
-    const categories = data?.map((item) => item.category?.name);
+    const categories = data?.map((item) => item.category);
     return ["All", ...new Set(categories)];
   };
 

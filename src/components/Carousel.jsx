@@ -90,15 +90,14 @@ const navigate = useNavigate()
                             </div>
 
                             {/* RIGHT IMAGE */}
-                            <div>
-                                <img
-                                    src={item.images?.[0]}   
-                                    alt={item.title}
-                                     onClick={() => navigate(`/product/${item.id}`)}
-                                     
-                                    className='rounded-full w-[400px] md:w-[550px] hover:scale-105 transition-all shadow-2xl shadow-red-400'
-                                />
-                            </div>
+                           <div className="flex justify-center items-center h-[250px] md:h-[400px]">
+  <img
+    src={item.image}
+    alt={item.title}
+    onClick={() => navigate(`/products/${item.id}`)}
+    className="max-h-full w-auto object-contain hover:scale-105 transition duration-300 drop-shadow-2xl cursor-pointer"
+  />
+</div>
 
                         </div>
                     </div>

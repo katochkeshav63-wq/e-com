@@ -2,26 +2,27 @@ import { useState } from "react";
 import { getData } from "/src/context/DataContext";
 
 const Category = () => {
-  const { data } = getData();
+  const { data = [] } = getData(); // fallback to empty array
   const [selectedCategory, setSelectedCategory] = useState("All");
 
+  // ✅ Fix category (string)
   const categories = [
     "All",
-    ...new Set(data?.map((item) => item.category?.name)),
+    ...new Set(data.map((item) => item.category)),
   ];
 
+  // ✅ Filter logic
   const filteredData =
     selectedCategory === "All"
       ? data
-      : data?.filter(
-          (item) => item.category?.name === selectedCategory
-        );
+      : data.filter((item) => item.category === selectedCategory);
 
   return (
     <div className="px-4 md:px-10 py-6">
-  
+
+      {/* Categories */}
       <div className="flex gap-3 flex-wrap justify-center mb-8">
-        {categories?.slice(0,8).map((cat, index) => (
+        {categories.slice(0, 8).map((cat, index) => (
           <button
             key={index}
             onClick={() => setSelectedCategory(cat)}
@@ -36,21 +37,20 @@ const Category = () => {
         ))}
       </div>
 
-      {/* 🔥 Products Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 "
-      >
-        {filteredData?.slice(0, 8).map((item) => (
+      {/* Products */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+        {filteredData.slice(0, 8).map((item) => (
           <div
             key={item.id}
-            className="bg-white  cursor-pointer  rounded-xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden group border-red-400"
-            onClick={() => window.location.href = `/products/${item.id}`}
+            className="bg-white cursor-pointer rounded-xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden group"
+            onClick={() => (window.location.href = `/products/${item.id}`)}
           >
-            {/* Image */}
+            {/* ✅ Fix image */}
             <div className="overflow-hidden">
               <img
-                src={item.images[0]}
+                src={item.image}
                 alt={item.title}
-                className="w-full h-44 object-cover group-hover:scale-110 transition duration-300"
+                className="w-full h-44 object-contain p-4 group-hover:scale-110 transition duration-300"
               />
             </div>
 
@@ -61,16 +61,22 @@ const Category = () => {
               </h3>
 
               <p className="text-lg font-bold text-indigo-600 mt-1">
-                ₹ {item.price}
+                $ {item.price}
               </p>
 
-              <p className="text-xs text-gray-500 mt-1">
-                {item.description}
-              </p>
+      <p className="text-lg font-bold text-indigo-600 mt-1">
+                ⭐ {item.rating?.rate} 
+               
+             </p>
 
-              {/* Button */}
-              <button className="w-full cursor-pointer mt-3 py-1.5 text-sm bg-black text-white rounded-md "
-              onClick={() => window.location.href = `/products/${item.id}`}>
+              {/* ✅ Prevent double click issue */}
+              <button
+                className="w-full cursor-pointer mt-3 py-1.5 text-sm bg-black text-white rounded-md"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.location.href = `/products/${item.id}`;
+                }}
+              >
                 View Product
               </button>
             </div>
