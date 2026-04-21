@@ -17,9 +17,10 @@ if (!PUBLISHABLE_KEY) {
 
 createRoot(document.getElementById('root')).render(
   // <StrictMode>
+  <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
   <DataProvider>
     <CartProvider>
-      <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+      
         <App />
         <ScrollToTop color='white' smooth style={{backgroundColor:'#fa2d37', display:'flex', alignItems:'center', justifyContent:'center'}}/>
         <ToastContainer
@@ -34,8 +35,8 @@ createRoot(document.getElementById('root')).render(
           pauseOnHover
           theme="light"
         />
-      </ClerkProvider>
     </CartProvider>
   </DataProvider>
+   </ClerkProvider>
   // </StrictMode>,
 )

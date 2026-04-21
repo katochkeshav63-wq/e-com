@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { getData } from "/src/context/DataContext";
+import { useNavigate } from "react-router-dom";
 
 const Category = () => {
+  const navigate = useNavigate()
   const { data = [] } = getData(); // fallback to empty array
   const [selectedCategory, setSelectedCategory] = useState("All");
 
@@ -74,7 +76,7 @@ const Category = () => {
                 className="w-full cursor-pointer mt-3 py-1.5 text-sm bg-black text-white rounded-md"
                 onClick={(e) => {
                   e.stopPropagation();
-                  window.location.href = `/products/${item.id}`;
+                  navigate (`/products/${item.id}`) ;
                 }}
               >
                 View Product
